@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Bell, Mail, Plane, Target } from "lucide-react";
+import { Bell, Mail, Plane, XCircle } from "lucide-react";
 
 import heroImage from "@/assets/hero-flight.jpg";
 import { Button } from "@/components/ui/button";
@@ -34,21 +34,21 @@ const routes = [
   { city: "峴港 Da Nang", code: "TPE → DAD", price: "NT$7,900" },
 ];
 
-const steps = [
+const features = [
   {
     icon: Plane,
-    title: "選擇航線 Pick a route",
-    body: "Popular departures from Taipei (TPE / TSA) — pick the destinations you'd fly to.",
-  },
-  {
-    icon: Target,
-    title: "設定目標價 Set a target",
-    body: "Tell us the maximum you're willing to pay. No dates needed — flexibility is the point.",
+    title: "盯緊熱門航線 (Always-on route watching)",
+    body: "持續監控台北出發的熱門航線（東京、首爾），自動抓最低票價。",
   },
   {
     icon: Mail,
-    title: "收信出發 Get the email",
-    body: "When the cheapest fare hits your number, an email lands in your inbox with the link.",
+    title: "達標自動通知 (Target-price email alert)",
+    body: "低於你設定的目標價，就寄 email 提醒你，附上立即訂購連結。",
+  },
+  {
+    icon: XCircle,
+    title: "隨時取消 (Cancel anytime)",
+    body: "月訂閱制，不想用隨時停，沒有綁約。",
   },
 ];
 
@@ -115,16 +115,16 @@ function Landing() {
                 <Link to="/auth">開始追蹤 / Start watching</Link>
               </Button>
               <Button asChild size="lg" variant="outline">
-                <a href="#how">How it works</a>
+                <a href="#features">Features / 產品特點</a>
               </Button>
             </div>
           </div>
         </section>
 
-        <section id="how" className="mx-auto max-w-6xl px-5 py-20">
-          <h2 className="font-display text-3xl font-bold tracking-tight">運作方式 How it works</h2>
+        <section id="features" className="mx-auto max-w-6xl px-5 py-20">
+          <h2 className="font-display text-3xl font-bold tracking-tight">產品特點 Features</h2>
           <div className="mt-10 grid gap-5 md:grid-cols-3">
-            {steps.map(({ icon: Icon, title, body }) => (
+            {features.map(({ icon: Icon, title, body }) => (
               <div
                 key={title}
                 className="rounded-xl border border-border bg-card p-6 shadow-lift"
