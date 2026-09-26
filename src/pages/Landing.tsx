@@ -1,29 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router";
 import { useEffect, useState } from "react";
 import { Bell, Mail, Plane, XCircle } from "lucide-react";
 
 import heroImage from "@/assets/hero-flight.jpg";
 import { Button } from "@/components/ui/button";
+import { usePageMeta } from "@/hooks/use-page-meta";
 import { supabase } from "@/integrations/supabase/client";
-
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Flight Price Notifier — 機票降價通知" },
-      {
-        name: "description",
-        content:
-          "Set a route from Taipei and a target price. We watch the fare and email you the moment it drops to your budget.",
-      },
-      { property: "og:title", content: "Flight Price Notifier — 機票降價通知" },
-      {
-        property: "og:description",
-        content: "設定航線與目標價，機票降價就通知你。Email alerts for cheap flights from Taipei.",
-      },
-    ],
-  }),
-  component: Landing,
-});
 
 const routes = [
   { city: "東京 Tokyo", code: "TPE → NRT", price: "NT$6,200" },
@@ -52,7 +34,11 @@ const features = [
   },
 ];
 
-function Landing() {
+export default function Landing() {
+  usePageMeta(
+    "Flight Price Notifier — 機票降價通知",
+    "Set a route from Taipei and a target price. We watch the fare and email you the moment it drops to your budget.",
+  );
   const [signedIn, setSignedIn] = useState(false);
 
   useEffect(() => {
@@ -75,11 +61,11 @@ function Landing() {
           </div>
           {signedIn ? (
             <Button asChild variant="default" size="sm">
-              <Link to="/dashboard">Dashboard / 我的通知</Link>
+              <Link to="/app">Dashboard / 我的通知</Link>
             </Button>
           ) : (
             <Button asChild variant="default" size="sm">
-              <Link to="/auth">Sign in / 登入</Link>
+              <Link to="/sign-in">Sign in / 登入</Link>
             </Button>
           )}
         </div>
@@ -112,7 +98,7 @@ function Landing() {
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <Button asChild size="lg">
-                <Link to="/auth">開始追蹤 / Start watching</Link>
+                <Link to="/sign-in">開始追蹤 / Start watching</Link>
               </Button>
               <Button asChild size="lg" variant="outline">
                 <a href="#features">Features / 產品特點</a>
@@ -170,7 +156,7 @@ function Landing() {
             Free to start. One email per drop — no spam, unsubscribe anytime.
           </p>
           <Button asChild size="lg" className="mt-8">
-            <Link to="/auth">Sign in / 登入</Link>
+            <Link to="/sign-in">Sign in / 登入</Link>
           </Button>
         </section>
       </main>

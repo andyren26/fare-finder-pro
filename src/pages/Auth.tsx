@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -7,38 +7,26 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
+import { usePageMeta } from "@/hooks/use-page-meta";
 
-export const Route = createFileRoute("/auth")({
-  head: () => ({
-    meta: [
-      { title: "Sign in — Flight Price Notifier" },
-      {
-        name: "description",
-        content: "Sign in or create an account to watch flight routes from Taipei and get price-drop emails.",
-      },
-      { property: "og:title", content: "Sign in — Flight Price Notifier" },
-      {
-        property: "og:description",
-        content: "登入以設定航線與目標價，機票降價就通知你。",
-      },
-    ],
-  }),
-  component: AuthPage,
-});
+type AuthMode = "signin" | "signup";
 
-function AuthPage() {
+export default function AuthPage({ mode }: { mode: AuthMode }) {
+  usePageMeta(
+    mode === "signin" ? "Sign in — Flight Price Notifier" : "Sign up — Flight Price Notifier",
+    "Sign in or create an account to watch flight routes from Taipei and get price-drop emails.",
+  );
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/dashboard", replace: true });
+      if (data.session) navigate("/app", { replace: true });
     });
     const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
-      if (session) navigate({ to: "/dashboard", replace: true });
+      if (session) navigate("/app", { replace: true });
     });
     return () => sub.subscription.unsubscribe();
   }, [navigate]);
@@ -77,7 +65,7 @@ function AuthPage() {
       return;
     }
     if (result.redirected) return;
-    navigate({ to: "/dashboard", replace: true });
+    navigate("/app", { replace: true });
   }
 
   return (
@@ -135,7 +123,7 @@ function AuthPage() {
         <button
           type="button"
           className="mt-6 w-full text-center text-sm text-muted-foreground hover:text-foreground"
-          onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+          onClick={() => navigate(mode === "signin" ? "/sign-up" : "/sign-in")}
         >
           {mode === "signin"
             ? "還沒有帳號？註冊 / Need an account? Sign up"

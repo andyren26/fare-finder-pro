@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Bell, Trash2 } from "lucide-react";
@@ -7,22 +7,8 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { usePageMeta } from "@/hooks/use-page-meta";
 import { supabase } from "@/integrations/supabase/client";
-
-export const Route = createFileRoute("/_authenticated/dashboard")({
-  head: () => ({
-    meta: [
-      { title: "My alerts — Flight Price Notifier" },
-      {
-        name: "description",
-        content: "Manage the flight routes you watch from Taipei and the target price for each one.",
-      },
-      { property: "og:title", content: "My alerts — Flight Price Notifier" },
-      { property: "og:description", content: "管理你的航線與目標價通知。" },
-    ],
-  }),
-  component: Dashboard,
-});
 
 type Alert = {
   id: string;
@@ -34,7 +20,11 @@ type Alert = {
   created_at: string;
 };
 
-function Dashboard() {
+export default function Dashboard() {
+  usePageMeta(
+    "My alerts — Flight Price Notifier",
+    "Manage the flight routes you watch from Taipei and the target price for each one.",
+  );
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [origin, setOrigin] = useState("TPE");
@@ -88,7 +78,7 @@ function Dashboard() {
     await queryClient.cancelQueries();
     queryClient.clear();
     await supabase.auth.signOut();
-    navigate({ to: "/auth", replace: true });
+    navigate("/sign-in", { replace: true });
   }
 
   return (

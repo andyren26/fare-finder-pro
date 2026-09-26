@@ -28,3 +28,25 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+## Architecture
+
+Plain Vite + React single-page app with client-side routing (React Router):
+
+| Path | Page |
+| --- | --- |
+| `/` | Landing page |
+| `/sign-in` | Sign in |
+| `/sign-up` | Create account |
+| `/app` | Price alerts dashboard (requires sign-in) |
+
+`/auth` and `/dashboard` redirect to `/sign-in` and `/app`.
+
+## Build & deploy
+
+```sh
+bun install
+bun run build   # static output in dist/
+```
+
+Deploys to Vercel as a static site. `vercel.json` rewrites every path to `index.html` so deep links such as `/app` resolve on the client. The Supabase URL and publishable key are read from `VITE_SUPABASE_URL` / `VITE_SUPABASE_PUBLISHABLE_KEY` at build time.
