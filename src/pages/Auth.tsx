@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
 import { usePageMeta } from "@/hooks/use-page-meta";
 
 type AuthMode = "signin" | "signup";
@@ -57,15 +56,14 @@ export default function AuthPage({ mode }: { mode: AuthMode }) {
   }
 
   async function handleGoogle() {
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
+    // Redirects to Google, then back to this site with a session.
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: window.location.origin },
     });
-    if (result.error) {
+    if (error) {
       toast.error("Google sign-in failed");
-      return;
     }
-    if (result.redirected) return;
-    navigate("/app", { replace: true });
   }
 
   return (
