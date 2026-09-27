@@ -2,13 +2,14 @@ import { Link, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { Bell } from "lucide-react";
 
+import { RoutePlans } from "@/components/RoutePlans";
 import { Button } from "@/components/ui/button";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { supabase } from "@/integrations/supabase/client";
 
-// M0 authenticated shell: greets the user and holds the place of the route
-// dashboard. Supabase is used for auth only — route subscriptions arrive in M1.1
-// and are stored in DynamoDB on AWS, not in Supabase.
+// M1 dashboard: the signed-in user subscribes to a route with a TWD target price.
+// Supabase is used for auth only — subscriptions are stored in DynamoDB on AWS
+// via the flight-api (API Gateway → Lambda).
 export default function Dashboard() {
   usePageMeta(
     "My dashboard — Flight Price Notifier",
@@ -47,14 +48,10 @@ export default function Dashboard() {
 
       <main className="mx-auto max-w-5xl px-5 py-16">
         <h1 className="font-display text-3xl font-bold tracking-tight">Hi {email ?? "…"}</h1>
-        <div className="mt-8 rounded-xl border border-dashed border-border bg-card p-10 shadow-lift">
-          <p className="text-lg font-medium">
-            你的航線追蹤儀表板即將上線 — 下一個里程碑會加上訂閱航線的功能。
-          </p>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Your dashboard is coming soon. Route-subscription will be added in the next milestone.
-          </p>
-        </div>
+        <p className="mt-3 text-muted-foreground">
+          選一條航線、設定你的目標價（新台幣）。票價低於目標時，我們會寄 email 通知你。
+        </p>
+        {email ? <RoutePlans email={email} /> : null}
       </main>
     </div>
   );
