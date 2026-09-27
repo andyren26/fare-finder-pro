@@ -11,6 +11,7 @@ const PLANS: { plan: PlanName; title: string; route: string; destination: string
   [
     { plan: "tokyo", title: "台北 ✈ 東京", route: "TPE-TYO", destination: "TYO", hint: 9325 },
     { plan: "seoul", title: "台北 ✈ 首爾", route: "TPE-SEL", destination: "SEL", hint: 5989 },
+    { plan: "london", title: "台北 ✈ 倫敦", route: "TPE-LON", destination: "LON", hint: 22786 },
   ];
 
 const twd = (n: number) => `NT$${n.toLocaleString("zh-TW")}`;
@@ -152,7 +153,7 @@ export function RoutePlans({ email }: { email: string }) {
   }
 
   return (
-    <div className="mt-8 grid gap-5 md:grid-cols-2">
+    <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
       {PLANS.map((p) => (
         <PlanCard
           key={p.plan}

@@ -7,7 +7,7 @@ export const FLIGHT_API_URL = (
   "https://rpb93lyjzd.execute-api.us-east-1.amazonaws.com"
 ).replace(/\/+$/, "");
 
-export type PlanName = "tokyo" | "seoul";
+export type PlanName = "tokyo" | "seoul" | "london";
 
 export type Subscription = {
   email: string;
